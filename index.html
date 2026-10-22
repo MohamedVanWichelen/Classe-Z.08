@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Classe Z.08</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap">
+    <style>
+        :root {
+            --bg: #fff;
+            --ink: #111827;
+            --mu: #6B7280;
+            --ln: #E5E7EB;
+            --ac: #1F3A93;
+            --ok: #1B7F48;
+            --okb: #EAF6EF;
+            --ko: #B8322A;
+            --kob: #FCEEEC;
+            color-scheme: light;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px)
+        }
+
+        @media (prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0F1420;
+                --ink: #E8EBF2;
+                --mu: #8D97AB;
+                --ln: #252E42;
+                --ac: #8FA8FF;
+                --ok: #4CC083;
+                --okb: #12301F;
+                --ko: #F0776F;
+                --kob: #3A1A18;
+                color-scheme: dark
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #0F1420;
+            --ink: #E8EBF2;
+            --mu: #8D97AB;
+            --ln: #252E42;
+            --ac: #8FA8FF;
+            --ok: #4CC083;
+            --okb: #12301F;
+            --ko: #F0776F;
+            --kob: #3A1A18;
+            color-scheme: dark
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: inherit
+        }
+
+        html {
+            scroll-padding-top: env(safe-area-inset-top, 0px)
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 400 17px/1.55 Barlow, system-ui, sans-serif
+        }
+
+        main {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 64px 20px 64px
+        }
+
+        .clock {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 5;
+            background: var(--bg);
+            border-left: 1px solid var(--ln);
+            border-bottom: 1px solid var(--ln);
+            border-bottom-left-radius: 8px;
+            padding: calc(8px + env(safe-area-inset-top, 0px)) 14px 8px;
+            font-size: 14px;
+            font-variant-numeric: tabular-nums
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: Barlow, system-ui, sans-serif;
+            margin: 0;
+            line-height: 1.25;
+            font-weight: 600
+        }
+
+        h1 {
+            font-size: 34px;
+            letter-spacing: -.01em
+        }
+
+        h2 {
+            font-size: 24px
+        }
+
+        h3 {
+            font-size: 18px
+        }
+
+        p {
+            margin: 6px 0
+        }
+
+        .mu {
+            color: var(--mu);
+            font-size: 15px
+        }
+
+        button {
+            font: inherit;
+            cursor: pointer;
+            border: 0;
+            color: inherit;
+            background: none
+        }
+
+        button:focus-visible {
+            outline: 2px solid var(--ac);
+            outline-offset: 2px
+        }
+
+        button[disabled] {
+            opacity: .45;
+            cursor: default
+        }
+
+        .btn {
+            background: var(--ink);
+            color: var(--bg);
+            font-weight: 500;
+            padding: 10px 18px;
+            border-radius: 6px
+        }
+
+        .btn.alt {
+            background: transparent;
+            color: var(--ink);
+            border: 1px solid var(--ln)
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 22px 0 8px
+        }
+
+        .bar {
+            height: 3px;
+            background: var(--ln);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 6px
+        }
+
+        .bar i {
+            display: block;
+            height: 100%;
+            background: var(--ac);
+            width: 0;
+            transition: width .4s
+        }
+
+        .card {
+            padding: 18px 0;
+            border-bottom: 1px solid var(--ln)
+        }
+
+        .card .t {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px
+        }
+
+        .card button.btn {
+            margin-top: 12px;
+            padding: 7px 14px;
+            font-size: 15px
+        }
+
+        .opt {
+            display: block;
+            width: 100%;
+            text-align: left;
+            border: 1px solid var(--ln);
+            border-radius: 6px;
+            padding: 12px 14px;
+            margin: 8px 0
+        }
+
+        .opt:hover:not([disabled]) {
+            border-color: var(--ac)
+        }
+
+        .opt.ok {
+            border-color: var(--ok);
+            background: var(--okb)
+        }
+
+        .opt.ko {
+            border-color: var(--ko);
+            background: var(--kob)
+        }
+
+        .fb {
+            border-radius: 6px;
+            padding: 12px 14px;
+            margin: 16px 0
+        }
+
+        .fb.ok {
+            background: var(--okb)
+        }
+
+        .fb.ko {
+            background: var(--kob)
+        }
+
+        .miss {
+            border-top: 1px solid var(--ln);
+            padding: 14px 0
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px
+        }
+
+        .tag {
+            font-size: 14px;
+            color: var(--ko);
+            font-weight: 500
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            * {
+                transition: none !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="clock" id="clk"></div>
+    <main id="app"></main>
+    <script>
+        var C = { g: ["Techniques de gardiennage", "Consentement, pas de violence, la police est la seule autorité judiciaire."], e: ["Esquive et légitime défense", "5 conditions : personne visée, illégitime, grave et actuelle, immédiate, proportionnée."], c: ["Culture et éthique", "Même loi pour tous · oignon · TOPOI · modèle de Cooper."], m: ["Communication, plaintes, radio", "Non verbal ≈ 93 % · écouter d’abord · Roger = compris."], r: ["Situations de crise", "Avertissement ≠ alarme · l’agent applique, il ne décide pas."], i: ["Incendie", "Triangle du feu · CO · flash-over ≠ backdraft · viser la base des flammes."], s: ["Droit social et CP 317", "Contrat = travail + salaire + autorité · CP 317 · CPPT dès 50."] };
+        // [chapitre, question, bonne réponse, 3 mauvaises, explication]
+        var Q = [
+            ["g", "Que faut-il avant de contrôler une personne à l’entrée ?", "Son accord (consentement) et une justification", "Rien : l’uniforme donne le droit de fouiller", "Un simple soupçon suffit pour fouiller de force", "L’autorisation écrite du client", "Le consentement est essentiel. Si la personne refuse, l’agent peut refuser l’entrée, jamais l’y contraindre ni user de violence."],
+            ["g", "Dans quel cas un agent peut-il retenir une personne ?", "Flagrant délit, le temps d’appeler la police, sans violence", "Dès qu’elle est suspectée de vol", "Quand elle refuse un contrôle", "Quand elle n’a pas ses documents", "Rétention = cas exceptionnel : flagrant délit uniquement, sans violence ni fouille approfondie. La police est la seule autorité judiciaire."],
+            ["g", "Lors d’un contrôle de véhicule, où se place l’agent ?", "Sur le côté du véhicule", "Devant le véhicule", "Derrière le véhicule", "À l’intérieur de l’habitacle", "Jamais devant ni derrière. Moteur coupé, contact visuel et verbal avec le conducteur, distance de sécurité."],
+            ["g", "Vous découvrez un objet suspect dans un coffre. Que faites-vous ?", "Je n’y touche pas, je referme et j’appelle les forces de l’ordre", "Je l’ouvre pour vérifier", "Je le déplace hors du véhicule", "Je demande au conducteur de l’expliquer en le manipulant", "Objet suspect = on n’y touche pas (risque d’engin explosif improvisé). En cas de danger, on referme immédiatement."],
+            ["g", "Quel est le rôle du détecteur de métaux ?", "Compléter le contrôle manuel, sans remplacer l’observation", "Remplacer la palpation", "Prouver qu’une personne est coupable", "Détecter tous les objets dangereux", "Il détecte de petites quantités de métal. Un signal = contrôle renforcé."],
+            ["g", "Que fait l’agent avant une palpation de sécurité ?", "Il explique la procédure et demande l’accord", "Il palpe directement pour gagner du temps", "Il fait une fouille approfondie", "Il appelle la police", "Palpation superficielle des vêtements, jamais intrusive, même sexe recommandé, ton professionnel."],
+            ["e", "Laquelle de ces situations est de la légitime défense ?", "Repousser un coup de poing en cours par un coup de poing", "Se relever et frapper après la fin de l’attaque", "Frapper quelqu’un qui attaque son chien", "Résister à un policier qui arrête quelqu’un légalement", "Il faut une attaque contre une personne, illégitime, grave et actuelle, avec une défense immédiate et proportionnée. Après coup = vengeance."],
+            ["e", "Il manque une seule des 5 conditions. Que devient la légitime défense ?", "Elle n’existe plus", "Elle est simplement atténuée", "Elle reste valable si l’agent est en service", "Le juge tranche toujours en faveur de l’agent", "Les 5 conditions sont cumulatives : une seule manquante suffit à l’écarter."],
+            ["e", "Quelle est la meilleure manière de survivre à une agression ?", "Éviter le combat (distance, fuite)", "Frapper en premier", "Jouer au héros", "Rester immobile", "La fuite est une réussite. La majorité des agressions s’arrêtent au bluff."],
+            ["e", "Quelle est la bonne posture défensive ?", "Une jambe en arrière, jambes fléchies, mains ouvertes et visibles", "Poings fermés et regard défiant", "Bras croisés sur la poitrine", "Dos tourné à l’opposant", "Poings fermés + regard agressif = escalade. On protège ventre et aine et on garde une distance de sécurité."],
+            ["e", "Quel est le « faux choix » efficace face à un opposant ?", "« Soit vous passez au guichet, soit vous quittez les lieux »", "« Vous partez ou j’appelle tout le monde »", "« Vous exagérez, calmez-vous »", "« Ce n’est pas mon problème »", "Un choix limité : l’opposant garde l’impression de décider, et le résultat respecte la mission de l’agent."],
+            ["e", "Dans quels cas la loi présume-t-elle la légitime défense ?", "Escalade de nuit dans une maison habitée ; vol avec violence contre une personne", "Vol à l’étalage ; dispute verbale", "Insultes ; bagarre entre deux personnes", "Toute intrusion de jour dans un magasin", "Ce sont les 2 présomptions légales."],
+            ["c", "Quel niveau est le cœur du diagramme en oignon ?", "Les valeurs", "Les symboles", "Les rituels", "Les héros et mythes", "Symboles (visibles) → héros → rituels → valeurs (invisibles, les plus difficiles à changer)."],
+            ["c", "Qu’est-ce qu’un préjugé ?", "Un stéréotype accompagné d’émotions fortes (peur, méfiance…)", "Une règle de loi", "Un fait vérifié", "Une simple différence de culture", "Stéréotype = idée généralisée. Préjugé = stéréotype + émotion. Discrimination = traitement inégal."],
+            ["c", "Que signifie TOPOI ?", "Taal, Ordre, Personnes, Organisation, Intention", "Temps, Objectif, Poste, Outils, Information", "Terrain, Ordre, Police, Organisation, Incident", "Technique, Observation, Prévention, Orientation, Intervention", "Modèle d’Edwin Hoffman pour analyser et résoudre les conflits interculturels."],
+            ["c", "Quelle est la première étape du modèle de Cooper ?", "Décrire le problème, sans jugement", "Faire un choix", "Évaluer les conséquences", "Appeler son responsable", "5 étapes : décrire, termes éthiques, actions possibles, conséquences, choix."],
+            ["c", "Une pratique culturelle peut-elle justifier une atteinte aux droits de l’homme ?", "Non, jamais", "Oui si elle est ancienne", "Oui si une religion l’exige", "Oui si la majorité est d’accord", "Même loi pour tous. La liberté religieuse n’est pas absolue : elle peut être limitée (sécurité, ordre public, santé, droits d’autrui)."],
+            ["c", "Qu’est-ce que l’ethnocentrisme ?", "Juger une autre culture avec les critères de la sienne", "Avoir peur de l’étranger", "Traiter quelqu’un de façon inégale selon son origine", "Vivre dans une société multiculturelle", "Peur de l’étranger = xénophobie. Traitement inégal = discrimination."],
+            ["m", "Quelle part de la communication est non verbale ?", "Environ 93 %", "Environ 7 %", "Environ 50 %", "Environ 25 %", "Les mots ≈ 7 %. Si mots et corps se contredisent, on croit le langage corporel."],
+            ["m", "Lequel est un parasite INTERNE ?", "Le stress ou la fatigue", "Le bruit ambiant", "Un réseau téléphonique défaillant", "Un environnement bruyant", "Internes : émotions, stress, fatigue, culture. Externes : bruit, problèmes techniques."],
+            ["m", "Face à un client qui se plaint, quelle est la première attitude ?", "Écouter sans interrompre", "Se justifier immédiatement", "Dire « Adressez-vous à mon responsable »", "Minimiser le problème", "D’abord l’attention, ensuite la solution. Évitez prétextes, négation, « oui, mais… » et accusations."],
+            ["m", "Que signifie « Roger » en radio ?", "Compris", "Répétez", "À vous", "Attendez", "Over = à vous · Repeat = répétez · Stand-by = attendez."],
+            ["m", "Que signifie le code 10-9 ?", "Répétez", "Bien compris", "Je quitte le réseau", "Aide / renfort demandé", "10-4 = bien compris · 10-7 = je quitte le réseau · 10-8 = j’arrive · 10-2-4 = renfort."],
+            ["m", "Que ne faut-il jamais dire à la radio ?", "Des noms de personnes ou d’entreprises, ni des codes d’alarme", "Le mot « Over »", "Une plaque épelée en alphabet OTAN", "Un message d’information court", "Messages courts, clairs, discipline. Micro à ± 20 cm de la bouche."],
+            ["m", "Au téléphone, qui raccroche en premier ?", "L’appelant", "L’agent", "Celui qui est le plus pressé", "Peu importe", "Aussi : répondre avant la 3e sonnerie, se présenter, jamais d’informations confidentielles."],
+            ["r", "Quelle est la différence entre avertissement et alarme ?", "Avertissement = préparation (signal interrompu) ; alarme = évacuation immédiate (signal continu)", "Les deux imposent l’évacuation immédiate", "L’alarme ne concerne que les secours", "L’avertissement est un signal continu pour tout le monde", "Avertissement = préparation. Alarme = évacuation."],
+            ["r", "La menace est externe au bâtiment. Que faire ?", "Rester à l’intérieur, loin des fenêtres et façades exposées", "Évacuer vers la rue", "Sortir observer", "Ouvrir les fenêtres", "Menace interne → évacuation. Menace externe → rester à l’intérieur."],
+            ["r", "Alerte à la bombe par téléphone : que faire de l’appelant ?", "Le garder en ligne le plus longtemps possible et noter un maximum d’infos", "Raccrocher et le rappeler", "Lui dire que la police arrive", "L’ignorer : c’est souvent un canular", "Noter date, heure, numéro, accent, bruits de fond, contenu. Puis prévenir la police. Toute alerte est prise au sérieux."],
+            ["r", "Une lettre contient de la poudre. Que faire ?", "Ne pas la secouer ni l’ouvrir, l’isoler, évacuer, couper la ventilation, appeler le 112", "Nettoyer la poudre rapidement", "Ouvrir les fenêtres", "La jeter à la poubelle", "Ne jamais nettoyer la poudre. Les personnes exposées se lavent à l’eau et au savon."],
+            ["r", "Quelle zone est réservée aux secours (danger immédiat) ?", "Zone rouge", "Zone orange", "Zone jaune", "Zone verte", "Rouge = danger · orange = appui logistique · jaune = dissuasion."],
+            ["r", "Quel est le rôle de l’agent dans un plan d’urgence ?", "Il applique les procédures, il ne décide pas", "Il dirige les secours", "Il décide de l’ampleur de la phase", "Il remplace le bourgmestre", "Autorité : commune = bourgmestre, province = gouverneur, fédéral = ministre. Police = bleu, secours = rouge, médical = vert."],
+            ["r", "À l’arrivée des secours, que fait l’agent ?", "Il met un gilet fluo, va au point de rendez-vous et donne lieu, étage et accès", "Il entre en zone rouge pour les guider", "Il attend dans le bâtiment", "Il bloque l’accès le temps de vérifier", "Ensuite : suivre les consignes, laisser l’accès libre, rester disponible."],
+            ["i", "Quels sont les 3 éléments du triangle du feu ?", "Combustible, comburant (oxygène), énergie d’activation (chaleur)", "Combustible, fumée, étincelle", "Gaz, eau, chaleur", "Oxygène, CO₂, flamme", "Supprimer un seul élément = pas de feu."],
+            ["i", "L’eau est déconseillée ou interdite sur quels feux ?", "Liquides (B), gaz (C), métaux (D), graisses (F)", "Solides (A) uniquement", "Tous sauf les gaz", "Aucun : l’eau éteint tout", "L’eau ne convient qu’aux feux de solides (A). Feu de gaz : couper l’arrivée de gaz en priorité."],
+            ["i", "Le monoxyde de carbone (CO) est…", "Invisible, inodore et mortel", "Visible et très odorant", "Inoffensif", "Produit uniquement par une combustion complète", "Le CO vient d’une combustion incomplète. La fumée tue plus que les flammes."],
+            ["i", "Quelle est la différence entre flash-over et backdraft ?", "Flash-over = embrasement général d’une pièce ; backdraft = explosion de fumées lors d’un apport brutal d’air", "Backdraft = embrasement général ; flash-over = explosion à l’ouverture d’une porte", "Ce sont deux noms du même phénomène", "Le flash-over ne concerne que les gaz", "Signes : fumée noire dense, portes chaudes, sifflements, flammes bleues."],
+            ["i", "Avant d’ouvrir une porte pendant un incendie, que faire ?", "La toucher (chaleur), écouter, observer la fumée, se protéger derrière", "L’ouvrir en grand rapidement", "Foncer avec un extincteur", "Casser la vitre", "Ne jamais entrer dans une pièce enfumée sans protection respiratoire."],
+            ["i", "Comment utiliser un extincteur ?", "Retirer la goupille, viser la base des flammes, garder une issue derrière soi", "Viser le haut des flammes", "Se placer au-dessus de l’appareil", "Fermer l’issue pour confiner le feu", "Distances : CO₂ 1,5 m · poudre 3–4 m · mousse 4–5 m. À-coups pour les solides, jet continu pour les liquides."],
+            ["i", "Quelle obligation annuelle pour l’employeur ?", "Au moins un exercice d’évacuation", "Deux inspections des pompiers", "Remplacer tous les extincteurs", "Aucune", "Aussi : dossier de prévention, analyse des risques, formation (AR du 28 mars 2014)."],
+            ["s", "Quels sont les éléments d’un contrat de travail ?", "Travail + rémunération + autorité de l’employeur", "Travail + liberté d’horaire + facture", "Rémunération + indépendance", "Un accord oral uniquement", "S’il y a autorité (subordination) → contrat de travail. Sinon → indépendant."],
+            ["s", "Quelle commission paritaire concerne le gardiennage ?", "CP 317", "CP 200", "CP 100", "CP 330", "Un service de gardiennage interne dépend de la CP de son entreprise, pas de la 317."],
+            ["s", "À partir de combien de travailleurs un CPPT est-il obligatoire ?", "50", "20", "100", "10", "Conseil d’entreprise : 100. Élections sociales : tous les 4 ans."],
+            ["s", "Quels sont les 3 principes du contrôle des e-mails et d’Internet ?", "Finalité, proportionnalité, transparence", "Rapidité, secret, efficacité", "Finalité, secret, surprise", "Proportionnalité, confidentialité, autorité", "Pas de contrôle secret, pas de caméras cachées."],
+            ["s", "Quelle est la durée de travail maximale par jour (CP 317) ?", "12 heures", "8 heures", "10 heures", "14 heures", "Max 48 h/semaine, 180 h/mois, 1 924 h/an. Moyenne : 37 h/semaine."],
+            ["s", "Que peuvent faire les inspecteurs sociaux ?", "Entrer sans prévenir dans les lieux de travail (lieux privés : autorisation du juge)", "Rien sans l’accord de l’employeur", "Entrer seulement avec 48 h de préavis", "Entrer dans les domiciles sans autorisation", "Ils interrogent, saisissent des documents, photographient. Avertissement ≠ procès-verbal (infraction constatée)."],
+            ["s", "Quand le planning mensuel doit-il être communiqué ?", "Entre le 22 et le 25 du mois", "Le 1er du mois", "Le dernier jour du mois", "La veille", "11 jours fériés (10 légaux + 1 communautaire)."]
+        ];
+        C = (function (o) { var n = {};['s', 'm', 'c', 'g', 'e', 'i', 'r'].forEach(function (k) { n[k] = o[k] }); return n })(C);
+        var S = {}; try { S = JSON.parse(localStorage.getItem("gd1") || "{}") } catch (e) { }
+        function save() { try { localStorage.setItem("gd1", JSON.stringify(S)) } catch (e) { } }
+        function st(i) { return S[i] || (S[i] = { s: 0, k: 0 }) }
+        var A = document.getElementById("app"), se = null;
+        function sh(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t } return a }
+        function ids(c) { var r = []; Q.forEach(function (q, i) { if (!c || q[0] == c) r.push(i) }); return r }
+        function errs() { return ids().filter(function (i) { var x = st(i); return x.k > 0 && x.s < 2 }) }
+        function mast(c) { var l = ids(c); return Math.round(100 * l.filter(function (i) { return st(i).s >= 2 }).length / l.length) }
+        function nt(k) { var l = ids(k), d = 0, g = 0; l.forEach(function (i) { var x = S[i]; if (x && x.l !== undefined) { d++; g += x.l } }); return { d: d, n: l.length, p: Math.round(100 * g / l.length) } }
+        function nl(k) { var t = nt(k); return t.d < t.n ? t.d + ' / ' + t.n + ' vues' : t.p + ' % ' + (t.p >= 50 ? '✓' : '✗') }
+        function bilan() {
+            var h = '<div class="top"><button class="btn alt" onclick="home()">← Accueil</button></div><h1>Bilan</h1><p class="mu">Note d’une matière = bonnes réponses du premier coup. Il faut au moins 50 % dans chaque matière pour l’attestation.</p>', all = 1, fail = [], sum = 0, n = 0;
+            for (var k in C) {
+                var t = nt(k), ok = t.d == t.n && t.p >= 50; if (t.d < t.n) all = 0; else if (t.p < 50) fail.push(C[k][0]); sum += t.p; n++;
+                h += '<div class="card"><div class="t"><h3>' + C[k][0] + '</h3><b>' + (t.d < t.n ? 'à terminer' : t.p + ' % ' + (ok ? '✓' : '✗')) + '</b></div><div class="bar"><i style="width:' + t.p + '%"></i></div>' + (t.d < t.n ? '<button class="btn" onclick="go(\'' + k + '\')">Terminer</button>' : !ok ? '<button class="btn" onclick="go(\'' + k + '\')">Réviser</button>' : '') + '</div>'
+            }
+            var g = Math.round(sum / n);
+            h += '<h2 style="margin-top:24px">Note globale : ' + g + ' %' + (all ? '' : ' (provisoire)') + '</h2>';
+            h += !all ? '<p>Termine toutes les matières pour connaître ton verdict.</p>' : fail.length ? '<p>Pas encore : il manque 50 % en ' + fail.join(', ') + '. Courage, retente ces matières, tu progresses à chaque essai.</p>' : '<p><b>Félicitations !</b> Tu as au moins 50 % dans toutes les matières : tu aurais ton attestation.</p>';
+            A.innerHTML = h; window.scrollTo(0, 0)
+        }
+        function home() {
+            var e = errs().length, h = '<h1>Classe Z.08</h1><p class="mu">Réponds, lis l’explication, et les questions ratées reviennent pour que tu les retiennes.</p>';
+            h += '<p><b>Maîtrise globale : ' + mast() + ' %</b></p><div class="bar"><i style="width:' + mast() + '%"></i></div>';
+            h += '<div class="row"><button class="btn" onclick="go(\'x\')">Examen blanc (20 questions)</button><button class="btn alt" onclick="bilan()">Bilan</button><button class="btn alt" onclick="go(\'err\')"' + (e ? '' : ' disabled') + '>Mes erreurs (' + e + ')</button></div>';
+            for (var k in C) { h += '<div class="card"><div class="t"><h3>' + C[k][0] + '</h3><span class="mu">' + nl(k) + '</span></div><p class="mu">' + C[k][1] + '</p><div class="bar"><i style="width:' + mast(k) + '%"></i></div><button class="btn" onclick="go(\'' + k + '\')">S’entraîner</button></div>' }
+            h += '<p><button class="btn alt" onclick="if(confirm(\'Effacer toute ta progression ?\')){S={};save();home()}">Réinitialiser</button></p>';
+            A.innerHTML = h; window.scrollTo(0, 0)
+        }
+        function go(m) {
+            var l = m == "x" ? sh(ids()).slice(0, 20) : m == "err" ? errs() : ids(m); if (!l.length) return;
+            se = { q: sh(l), n: l.length, f: 0, ok: 0, miss: [], re: {}, m: m }; nxt()
+        }
+        function nxt() {
+            if (!se.q.length) return res();
+            var i = se.q[0], q = Q[i], o = sh([2, 3, 4, 5]), h = '<div class="top"><button class="btn alt" onclick="home()">← Accueil</button><span class="mu">' + se.f + ' / ' + se.n + ' réussies ou vues</span></div><div class="bar"><i style="width:' + 100 * se.f / se.n + '%"></i></div>';
+            h += (se.re[i] ? '<p class="tag">À revoir : tu t’es trompé sur celle-ci</p>' : '<p class="mu">' + C[q[0]][0] + '</p>') + '<h2>' + q[1] + '</h2><div id="o">';
+            o.forEach(function (x, n) { h += '<button class="opt" onclick="ans(' + n + ',' + x + ')">' + q[x] + '</button>' });
+            A.innerHTML = h + '</div><div id="fb"></div>'; se.o = o; window.scrollTo(0, 0)
+        }
+        function ans(n, x) {
+            var i = se.q.shift(), q = Q[i], ok = x == 2, b = document.querySelectorAll(".opt"), s = st(i);
+            b.forEach(function (e, m) { e.disabled = true; if (se.o[m] == 2) e.classList.add("ok"); else if (m == n) e.classList.add("ko") });
+            if (!se.re[i]) s.l = ok ? 1 : 0; if (ok) { s.s++; if (!se.re[i]) { se.ok++ } se.f++ } else { s.s = 0; s.k++; se.re[i] = 1; if (se.miss.indexOf(i) < 0) se.miss.push(i); se.q.splice(Math.min(3, se.q.length), 0, i) }
+            save();
+            document.getElementById("fb").innerHTML = '<div class="fb ' + (ok ? 'ok' : 'ko') + '"><b>' + (ok ? 'Correct.' : 'Pas tout à fait.') + '</b>' + (ok ? '' : '<p>Bonne réponse : <b>' + q[2] + '</b></p>') + '<p>' + q[6] + '</p></div><button class="btn" id="nx" onclick="nxt()">Suivant</button>';
+            document.getElementById("nx").focus()
+        }
+        function res() {
+            var p = Math.round(100 * se.ok / se.n), h = '<h1>' + se.ok + ' / ' + se.n + ' du premier coup</h1><p>' + (p >= 80 ? 'Très solide. Passe aux autres chapitres.' : p >= 50 ? 'Bon début. Relis les explications ci-dessous.' : 'Normal : c’est en se trompant qu’on retient. Relis, puis refais la série.') + '</p>';
+            if (se.miss.length) { h += '<h2>À retenir</h2>'; se.miss.forEach(function (i) { var q = Q[i]; h += '<div class="miss"><b>' + q[1] + '</b><p>✔ ' + q[2] + '</p><p class="mu">' + q[6] + '</p></div>' }) }
+            h += '<div class="row"><button class="btn" onclick="go(\'' + se.m + '\')">Refaire</button>';
+            if (errs().length) h += '<button class="btn alt" onclick="go(\'err\')">Mes erreurs (' + errs().length + ')</button>';
+            A.innerHTML = h + '<button class="btn alt" onclick="home()">Accueil</button></div>'; window.scrollTo(0, 0)
+        }
+        function tick() {
+            var t = new Date(2026, 9, 23, 12, 30, 0) - new Date(), e = document.getElementById('clk');
+            if (t <= 0) { e.textContent = 'Examen en cours ou terminé'; return }
+            var d = Math.floor(t / 864e5), h = Math.floor(t % 864e5 / 36e5), m = Math.floor(t % 36e5 / 6e4), s = Math.floor(t % 6e4 / 1e3), p = function (n) { return String(n).padStart(2, '0') };
+            e.innerHTML = '<span class="mu">Examen 12 h 30 · </span><b>' + (d ? d + ' j ' : '') + p(h) + ':' + p(m) + ':' + p(s) + '</b>'
+        }
+        tick(); setInterval(tick, 1000);
+        home();
+    </script>
+</body>
+
+</html>
