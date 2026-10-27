@@ -1,27 +1,524 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#101522">
-<meta name="robots" content="noindex, nofollow">
-<meta name="description" content="La plateforme de révision Classe Z.08 fait peau neuve. Les exercices sont temporairement indisponibles pendant la mise à jour.">
-<title>Classe Z.08 — Mise à jour en cours</title>
-<style>
-:root{color-scheme:dark;--bg:#101522;--ink:#edf0f7;--muted:#a4aec2;--line:#2b3448;--accent:#b5c4ff}
-*{box-sizing:border-box}body{margin:0;min-height:100svh;background:var(--bg);color:var(--ink);font:400 17px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;flex-direction:column}header,footer{width:min(100%,1040px);margin:auto;padding:28px clamp(24px,5vw,56px)}header{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600;letter-spacing:.04em}.brand{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:10px;color:var(--accent);font-size:12px}main{flex:1;display:flex;align-items:center;width:min(100%,760px);margin:auto;padding:64px clamp(24px,5vw,56px) 88px}.status{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:30px;padding:7px 13px;color:var(--accent);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px #b5c4ff66}.icon{margin:30px 0 24px;display:grid;place-items:center;width:72px;height:72px;border:1px solid var(--line);border-radius:22px;background:#171f30;color:var(--accent)}h1{font-size:clamp(36px,7vw,60px);line-height:1.1;letter-spacing:-.045em;font-weight:600;margin:0 0 26px}h1 span{color:var(--accent)}p{color:var(--muted);max-width:530px;margin:0 0 18px}.note{margin-top:32px;padding:20px 0 20px 20px;border-left:2px solid var(--accent);font-size:15px}.note strong{color:var(--ink);font-weight:500}.note p{margin:5px 0 0}.thanks{font-size:14px;margin-top:30px}footer{border-top:1px solid var(--line);color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:max(24px,env(safe-area-inset-bottom))}@media(prefers-color-scheme:light){:root{color-scheme:light;--bg:#fafbfe;--ink:#172035;--muted:#596579;--line:#dce2ed;--accent:#344b9b}.icon{background:#edf1fc}.dot{box-shadow:none}}@media(max-width:480px){main{padding-top:36px;padding-bottom:48px}header{padding-top:22px}.icon{width:60px;height:60px;border-radius:18px}footer{font-size:11px}}
-</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Classe Z.08</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap">
+    <style>
+        :root {
+            --bg: #fff;
+            --ink: #111827;
+            --mu: #6B7280;
+            --ln: #E5E7EB;
+            --ac: #1F3A93;
+            --ok: #1B7F48;
+            --okb: #EAF6EF;
+            --ko: #B8322A;
+            --kob: #FCEEEC;
+            color-scheme: light;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px)
+        }
+
+        @media (prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0F1420;
+                --ink: #E8EBF2;
+                --mu: #8D97AB;
+                --ln: #252E42;
+                --ac: #8FA8FF;
+                --ok: #4CC083;
+                --okb: #12301F;
+                --ko: #F0776F;
+                --kob: #3A1A18;
+                color-scheme: dark
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #0F1420;
+            --ink: #E8EBF2;
+            --mu: #8D97AB;
+            --ln: #252E42;
+            --ac: #8FA8FF;
+            --ok: #4CC083;
+            --okb: #12301F;
+            --ko: #F0776F;
+            --kob: #3A1A18;
+            color-scheme: dark
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: inherit
+        }
+
+        html {
+            scroll-padding-top: env(safe-area-inset-top, 0px)
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 400 17px/1.55 Barlow, system-ui, sans-serif
+        }
+
+        main {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 64px 20px 64px
+        }
+
+        .clock {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 5;
+            background: var(--bg);
+            border-left: 1px solid var(--ln);
+            border-bottom: 1px solid var(--ln);
+            border-bottom-left-radius: 8px;
+            padding: calc(8px + env(safe-area-inset-top, 0px)) 14px 8px;
+            font-size: 14px;
+            font-variant-numeric: tabular-nums
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: Barlow, system-ui, sans-serif;
+            margin: 0;
+            line-height: 1.25;
+            font-weight: 600
+        }
+
+        h1 {
+            font-size: 34px;
+            letter-spacing: -.01em
+        }
+
+        h2 {
+            font-size: 24px
+        }
+
+        h3 {
+            font-size: 18px
+        }
+
+        p {
+            margin: 6px 0
+        }
+
+        .mu {
+            color: var(--mu);
+            font-size: 15px
+        }
+
+        button {
+            font: inherit;
+            cursor: pointer;
+            border: 0;
+            color: inherit;
+            background: none
+        }
+
+        button:focus-visible {
+            outline: 2px solid var(--ac);
+            outline-offset: 2px
+        }
+
+        button[disabled] {
+            opacity: .45;
+            cursor: default
+        }
+
+        .btn {
+            background: var(--ink);
+            color: var(--bg);
+            font-weight: 500;
+            padding: 10px 18px;
+            border-radius: 6px
+        }
+
+        .btn.alt {
+            background: transparent;
+            color: var(--ink);
+            border: 1px solid var(--ln)
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 22px 0 8px
+        }
+
+        .bar {
+            height: 3px;
+            background: var(--ln);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 6px
+        }
+
+        .bar i {
+            display: block;
+            height: 100%;
+            background: var(--ac);
+            width: 0;
+            transition: width .4s
+        }
+
+        .card {
+            padding: 18px 0;
+            border-bottom: 1px solid var(--ln)
+        }
+
+        .card .t {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px
+        }
+
+        .card button.btn {
+            margin-top: 12px;
+            padding: 7px 14px;
+            font-size: 15px
+        }
+
+        .opt {
+            display: block;
+            width: 100%;
+            text-align: left;
+            border: 1px solid var(--ln);
+            border-radius: 6px;
+            padding: 12px 14px;
+            margin: 8px 0
+        }
+
+        .opt:hover:not([disabled]) {
+            border-color: var(--ac)
+        }
+
+        .opt.ok {
+            border-color: var(--ok);
+            background: var(--okb)
+        }
+
+        .opt.ko {
+            border-color: var(--ko);
+            background: var(--kob)
+        }
+
+        .fb {
+            border-radius: 6px;
+            padding: 12px 14px;
+            margin: 16px 0
+        }
+
+        .fb.ok {
+            background: var(--okb)
+        }
+
+        .fb.ko {
+            background: var(--kob)
+        }
+
+        .miss {
+            border-top: 1px solid var(--ln);
+            padding: 14px 0
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px
+        }
+
+        .rt {
+            font-size: 12px;
+            color: var(--ac);
+            font-weight: 600;
+            border: 1px solid var(--ac);
+            border-radius: 4px;
+            padding: 1px 6px;
+            margin-left: 6px;
+            vertical-align: middle
+        }
+
+        .tag {
+            font-size: 14px;
+            color: var(--ko);
+            font-weight: 500
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            * {
+                transition: none !important
+            }
+        }
+    </style>
 </head>
+
 <body>
-<header><span class="brand" aria-hidden="true">Z.08</span>CLASSE Z.08</header>
-<main><section aria-labelledby="title">
-<div class="status"><span class="dot" aria-hidden="true"></span>Mise à jour en cours</div>
-<div class="icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 6.5 3 3M4 20l4.5-1 11-11a3.2 3.2 0 0 0-4.5-4.5l-11 11L4 20Z"/><path d="M13 20h7"/></svg></div>
-<h1>Même le site révise<br><span>ses classiques.</span></h1>
-<p>Une petite pause pour préparer la suite : la plateforme fait peau neuve et son contenu est en cours de révision.</p>
-<div class="note"><strong>Les exercices prennent une courte pause.</strong><p>L’accès aux révisions et aux examens blancs est temporairement suspendu pendant les travaux. Reviens faire un tour un peu plus tard pour découvrir la mise à jour.</p></div>
-<p class="thanks">Merci pour ta patience. En attendant, garde tes notes à portée de main… et pense aussi à souffler un peu. ☕</p>
-</section></main>
-<footer><span>Securitas Examen Final · Classe Z.08</span><span>À très bientôt pour la suite.</span></footer>
+    <div class="clock" id="clk"></div>
+    <main id="app"></main>
+    <script>
+        var C = { o: ["Observation, évaluation des risques et rapport", "Repêchage : observer, évaluer les risques, rapporter."], b: ["Organisation du secteur", "Sécurité privée, presse, corruption, déontologie, prévention."], a: ["Approche des conflits", "Styles de conflit, zones de distance, agression."], g: ["Techniques de gardiennage", "Consentement, pas de violence, la police est la seule autorité judiciaire."], e: ["Esquive et légitime défense", "5 conditions : personne visée, illégitime, grave et actuelle, immédiate, proportionnée."], c: ["Culture et éthique", "Même loi pour tous · oignon · TOPOI · modèle de Cooper."], m: ["Communication, plaintes, radio", "Non verbal ≈ 93 % · écouter d’abord · Roger = compris."], r: ["Situations de crise", "Avertissement ≠ alarme · l’agent applique, il ne décide pas."], i: ["Incendie", "Triangle du feu · CO · flash-over ≠ backdraft · viser la base des flammes."], s: ["Droit social et CP 317", "Contrat = travail + salaire + autorité · CP 317 · CPPT dès 50."] };
+        // [chapitre, question, bonne réponse, 3 mauvaises, explication]
+        var Q = [
+            ["g", "Que faut-il avant de contrôler une personne à l’entrée ?", "Son accord (consentement) et une justification", "Rien : l’uniforme donne le droit de fouiller", "Un simple soupçon suffit pour fouiller de force", "L’autorisation écrite du client", "Le consentement est essentiel. Si la personne refuse, l’agent peut refuser l’entrée, jamais l’y contraindre ni user de violence."],
+            ["g", "Dans quel cas un agent peut-il retenir une personne ?", "Flagrant délit, le temps d’appeler la police, sans violence", "Dès qu’elle est suspectée de vol", "Quand elle refuse un contrôle", "Quand elle n’a pas ses documents", "Rétention = cas exceptionnel : flagrant délit uniquement, sans violence ni fouille approfondie. La police est la seule autorité judiciaire."],
+            ["g", "Lors d’un contrôle de véhicule, où se place l’agent ?", "Sur le côté du véhicule", "Devant le véhicule", "Derrière le véhicule", "À l’intérieur de l’habitacle", "Jamais devant ni derrière. Moteur coupé, contact visuel et verbal avec le conducteur, distance de sécurité."],
+            ["g", "Vous découvrez un objet suspect dans un coffre. Que faites-vous ?", "Je n’y touche pas, je referme et j’appelle les forces de l’ordre", "Je l’ouvre pour vérifier", "Je le déplace hors du véhicule", "Je demande au conducteur de l’expliquer en le manipulant", "Objet suspect = on n’y touche pas (risque d’engin explosif improvisé). En cas de danger, on referme immédiatement."],
+            ["g", "Quel est le rôle du détecteur de métaux ?", "Compléter le contrôle manuel, sans remplacer l’observation", "Remplacer la palpation", "Prouver qu’une personne est coupable", "Détecter tous les objets dangereux", "Il détecte de petites quantités de métal. Un signal = contrôle renforcé."],
+            ["g", "Que fait l’agent avant une palpation de sécurité ?", "Il explique la procédure et demande l’accord", "Il palpe directement pour gagner du temps", "Il fait une fouille approfondie", "Il appelle la police", "Palpation superficielle des vêtements, jamais intrusive, même sexe recommandé, ton professionnel."],
+            ["e", "Laquelle de ces situations est de la légitime défense ?", "Repousser un coup de poing en cours par un coup de poing", "Se relever et frapper après la fin de l’attaque", "Frapper quelqu’un qui attaque son chien", "Résister à un policier qui arrête quelqu’un légalement", "Il faut une attaque contre une personne, illégitime, grave et actuelle, avec une défense immédiate et proportionnée. Après coup = vengeance."],
+            ["e", "Il manque une seule des 5 conditions. Que devient la légitime défense ?", "Elle n’existe plus", "Elle est simplement atténuée", "Elle reste valable si l’agent est en service", "Le juge tranche toujours en faveur de l’agent", "Les 5 conditions sont cumulatives : une seule manquante suffit à l’écarter."],
+            ["e", "Quelle est la meilleure manière de survivre à une agression ?", "Éviter le combat (distance, fuite)", "Frapper en premier", "Jouer au héros", "Rester immobile", "La fuite est une réussite. La majorité des agressions s’arrêtent au bluff."],
+            ["e", "Quelle est la bonne posture défensive ?", "Une jambe en arrière, jambes fléchies, mains ouvertes et visibles", "Poings fermés et regard défiant", "Bras croisés sur la poitrine", "Dos tourné à l’opposant", "Poings fermés + regard agressif = escalade. On protège ventre et aine et on garde une distance de sécurité."],
+            ["e", "Quel est le « faux choix » efficace face à un opposant ?", "« Soit vous passez au guichet, soit vous quittez les lieux »", "« Vous partez ou j’appelle tout le monde »", "« Vous exagérez, calmez-vous »", "« Ce n’est pas mon problème »", "Un choix limité : l’opposant garde l’impression de décider, et le résultat respecte la mission de l’agent."],
+            ["e", "Dans quels cas la loi présume-t-elle la légitime défense ?", "Escalade de nuit dans une maison habitée ; vol avec violence contre une personne", "Vol à l’étalage ; dispute verbale", "Insultes ; bagarre entre deux personnes", "Toute intrusion de jour dans un magasin", "Ce sont les 2 présomptions légales."],
+            ["c", "Quel niveau est le cœur du diagramme en oignon ?", "Les valeurs", "Les symboles", "Les rituels", "Les héros et mythes", "Symboles (visibles) → héros → rituels → valeurs (invisibles, les plus difficiles à changer)."],
+            ["c", "Qu’est-ce qu’un préjugé ?", "Un stéréotype accompagné d’émotions fortes (peur, méfiance…)", "Une règle de loi", "Un fait vérifié", "Une simple différence de culture", "Stéréotype = idée généralisée. Préjugé = stéréotype + émotion. Discrimination = traitement inégal."],
+            ["c", "Que signifie TOPOI ?", "Taal, Ordre, Personnes, Organisation, Intention", "Temps, Objectif, Poste, Outils, Information", "Terrain, Ordre, Police, Organisation, Incident", "Technique, Observation, Prévention, Orientation, Intervention", "Modèle d’Edwin Hoffman pour analyser et résoudre les conflits interculturels."],
+            ["c", "Quelle est la première étape du modèle de Cooper ?", "Décrire le problème, sans jugement", "Faire un choix", "Évaluer les conséquences", "Appeler son responsable", "5 étapes : décrire, termes éthiques, actions possibles, conséquences, choix."],
+            ["c", "Une pratique culturelle peut-elle justifier une atteinte aux droits de l’homme ?", "Non, jamais", "Oui si elle est ancienne", "Oui si une religion l’exige", "Oui si la majorité est d’accord", "Même loi pour tous. La liberté religieuse n’est pas absolue : elle peut être limitée (sécurité, ordre public, santé, droits d’autrui)."],
+            ["c", "Qu’est-ce que l’ethnocentrisme ?", "Juger une autre culture avec les critères de la sienne", "Avoir peur de l’étranger", "Traiter quelqu’un de façon inégale selon son origine", "Vivre dans une société multiculturelle", "Peur de l’étranger = xénophobie. Traitement inégal = discrimination."],
+            ["m", "Quelle part de la communication est non verbale ?", "Environ 93 %", "Environ 7 %", "Environ 50 %", "Environ 25 %", "Les mots ≈ 7 %. Si mots et corps se contredisent, on croit le langage corporel."],
+            ["m", "Lequel est un parasite INTERNE ?", "Le stress ou la fatigue", "Le bruit ambiant", "Un réseau téléphonique défaillant", "Un environnement bruyant", "Internes : émotions, stress, fatigue, culture. Externes : bruit, problèmes techniques."],
+            ["m", "Face à un client qui se plaint, quelle est la première attitude ?", "Écouter sans interrompre", "Se justifier immédiatement", "Dire « Adressez-vous à mon responsable »", "Minimiser le problème", "D’abord l’attention, ensuite la solution. Évitez prétextes, négation, « oui, mais… » et accusations."],
+            ["m", "Que signifie « Roger » en radio ?", "Compris", "Répétez", "À vous", "Attendez", "Over = à vous · Repeat = répétez · Stand-by = attendez."],
+            ["m", "Que signifie le code 10-9 ?", "Répétez", "Bien compris", "Je quitte le réseau", "Aide / renfort demandé", "10-4 = bien compris · 10-7 = je quitte le réseau · 10-8 = j’arrive · 10-2-4 = renfort."],
+            ["m", "Que ne faut-il jamais dire à la radio ?", "Des noms de personnes ou d’entreprises, ni des codes d’alarme", "Le mot « Over »", "Une plaque épelée en alphabet OTAN", "Un message d’information court", "Messages courts, clairs, discipline. Micro à ± 20 cm de la bouche."],
+            ["m", "Au téléphone, qui raccroche en premier ?", "L’appelant", "L’agent", "Celui qui est le plus pressé", "Peu importe", "Aussi : répondre avant la 3e sonnerie, se présenter, jamais d’informations confidentielles."],
+            ["r", "Quelle est la différence entre avertissement et alarme ?", "Avertissement = préparation (signal interrompu) ; alarme = évacuation immédiate (signal continu)", "Les deux imposent l’évacuation immédiate", "L’alarme ne concerne que les secours", "L’avertissement est un signal continu pour tout le monde", "Avertissement = préparation. Alarme = évacuation."],
+            ["r", "La menace est externe au bâtiment. Que faire ?", "Rester à l’intérieur, loin des fenêtres et façades exposées", "Évacuer vers la rue", "Sortir observer", "Ouvrir les fenêtres", "Menace interne → évacuation. Menace externe → rester à l’intérieur."],
+            ["r", "Alerte à la bombe par téléphone : que faire de l’appelant ?", "Le garder en ligne le plus longtemps possible et noter un maximum d’infos", "Raccrocher et le rappeler", "Lui dire que la police arrive", "L’ignorer : c’est souvent un canular", "Noter date, heure, numéro, accent, bruits de fond, contenu. Puis prévenir la police. Toute alerte est prise au sérieux."],
+            ["r", "Une lettre contient de la poudre. Que faire ?", "Ne pas la secouer ni l’ouvrir, l’isoler, évacuer, couper la ventilation, appeler le 112", "Nettoyer la poudre rapidement", "Ouvrir les fenêtres", "La jeter à la poubelle", "Ne jamais nettoyer la poudre. Les personnes exposées se lavent à l’eau et au savon."],
+            ["r", "Quelle zone est réservée aux secours (danger immédiat) ?", "Zone rouge", "Zone orange", "Zone jaune", "Zone verte", "Rouge = danger · orange = appui logistique · jaune = dissuasion."],
+            ["r", "Quel est le rôle de l’agent dans un plan d’urgence ?", "Il applique les procédures, il ne décide pas", "Il dirige les secours", "Il décide de l’ampleur de la phase", "Il remplace le bourgmestre", "Autorité : commune = bourgmestre, province = gouverneur, fédéral = ministre. Police = bleu, secours = rouge, médical = vert."],
+            ["r", "À l’arrivée des secours, que fait l’agent ?", "Il met un gilet fluo, va au point de rendez-vous et donne lieu, étage et accès", "Il entre en zone rouge pour les guider", "Il attend dans le bâtiment", "Il bloque l’accès le temps de vérifier", "Ensuite : suivre les consignes, laisser l’accès libre, rester disponible."],
+            ["i", "Quels sont les 3 éléments du triangle du feu ?", "Combustible, comburant (oxygène), énergie d’activation (chaleur)", "Combustible, fumée, étincelle", "Gaz, eau, chaleur", "Oxygène, CO₂, flamme", "Supprimer un seul élément = pas de feu."],
+            ["i", "L’eau est déconseillée ou interdite sur quels feux ?", "Liquides (B), gaz (C), métaux (D), graisses (F)", "Solides (A) uniquement", "Tous sauf les gaz", "Aucun : l’eau éteint tout", "L’eau ne convient qu’aux feux de solides (A). Feu de gaz : couper l’arrivée de gaz en priorité."],
+            ["i", "Le monoxyde de carbone (CO) est…", "Invisible, inodore et mortel", "Visible et très odorant", "Inoffensif", "Produit uniquement par une combustion complète", "Le CO vient d’une combustion incomplète. La fumée tue plus que les flammes."],
+            ["i", "Quelle est la différence entre flash-over et backdraft ?", "Flash-over = embrasement général d’une pièce ; backdraft = explosion de fumées lors d’un apport brutal d’air", "Backdraft = embrasement général ; flash-over = explosion à l’ouverture d’une porte", "Ce sont deux noms du même phénomène", "Le flash-over ne concerne que les gaz", "Signes : fumée noire dense, portes chaudes, sifflements, flammes bleues."],
+            ["i", "Avant d’ouvrir une porte pendant un incendie, que faire ?", "La toucher (chaleur), écouter, observer la fumée, se protéger derrière", "L’ouvrir en grand rapidement", "Foncer avec un extincteur", "Casser la vitre", "Ne jamais entrer dans une pièce enfumée sans protection respiratoire."],
+            ["i", "Comment utiliser un extincteur ?", "Retirer la goupille, viser la base des flammes, garder une issue derrière soi", "Viser le haut des flammes", "Se placer au-dessus de l’appareil", "Fermer l’issue pour confiner le feu", "Distances : CO₂ 1,5 m · poudre 3–4 m · mousse 4–5 m. À-coups pour les solides, jet continu pour les liquides."],
+            ["i", "Quelle obligation annuelle pour l’employeur ?", "Au moins un exercice d’évacuation", "Deux inspections des pompiers", "Remplacer tous les extincteurs", "Aucune", "Aussi : dossier de prévention, analyse des risques, formation (AR du 28 mars 2014)."],
+            ["s", "Quels sont les éléments d’un contrat de travail ?", "Travail + rémunération + autorité de l’employeur", "Travail + liberté d’horaire + facture", "Rémunération + indépendance", "Un accord oral uniquement", "S’il y a autorité (subordination) → contrat de travail. Sinon → indépendant."],
+            ["s", "Quelle commission paritaire concerne le gardiennage ?", "CP 317", "CP 200", "CP 100", "CP 330", "Un service de gardiennage interne dépend de la CP de son entreprise, pas de la 317."],
+            ["s", "À partir de combien de travailleurs un CPPT est-il obligatoire ?", "50", "20", "100", "10", "Conseil d’entreprise : 100. Élections sociales : tous les 4 ans."],
+            ["s", "Quels sont les 3 principes du contrôle des e-mails et d’Internet ?", "Finalité, proportionnalité, transparence", "Rapidité, secret, efficacité", "Finalité, secret, surprise", "Proportionnalité, confidentialité, autorité", "Pas de contrôle secret, pas de caméras cachées."],
+            ["s", "Quelle est la durée de travail maximale par jour (CP 317) ?", "12 heures", "8 heures", "10 heures", "14 heures", "Max 48 h/semaine, 180 h/mois, 1 924 h/an. Moyenne : 37 h/semaine."],
+            ["s", "Que peuvent faire le SPF ?", "Entrer sans prévenir dans les lieux de travail (lieux privés : autorisation du juge)", "Rien sans l’accord de l’employeur", "Entrer seulement avec 48 h de préavis", "Entrer dans les domiciles sans autorisation", "Ils interrogent, saisissent des documents, photographient. Avertissement ≠ procès-verbal (infraction constatée)."],
+            ["s", "Quand le planning mensuel doit-il être communiqué ?", "Entre le 22 et le 25 du mois", "Le 1er du mois", "Le dernier jour du mois", "La veille", "11 jours fériés (10 légaux + 1 communautaire)."],
+            ["g", "Que peut contrôler un agent à l’entrée ?", "Les personnes, les bagages et les véhicules", "Uniquement les personnes", "Uniquement les véhicules", "Les domiciles des visiteurs", "Contrôle d’accès : empêcher l’entrée d’armes ou d’objets dangereux, avec l’accord de la personne."],
+            ["g", "Dans quel cas l’agent peut-il refuser l’entrée ?", "La personne refuse le contrôle, n’a pas les documents requis ou représente un danger", "Elle lui est antipathique", "Elle est en retard", "Elle vient d’une autre région", "Refus d’entrée possible dans ces cas, mais jamais de violence."],
+            ["g", "Le contrôle à la sortie est…", "Jamais systématique et toujours avec consentement", "Systématique pour tous", "Interdit en toutes circonstances", "Imposé sans consentement", "Il vise à éviter le vol ou la sortie d’objets dangereux, selon le règlement."],
+            ["g", "Qu’observe-t-on à l’arrivée d’un véhicule ?", "Vitesse, type de véhicule, nombre de personnes, plaque et comportement du conducteur", "Uniquement la couleur", "Uniquement la plaque", "Rien avant l’arrêt complet", "On garde toujours une distance de sécurité."],
+            ["g", "Que demande-t-on au conducteur avant le contrôle ?", "Couper le moteur (et la radio)", "Laisser le moteur tourner", "Descendre en laissant les clés", "Ouvrir toutes les portes sans rien dire", "Ensuite : contact visuel et verbal, vérification du conducteur, des passagers et du véhicule."],
+            ["g", "Que peut faire l’agent en magasin en cas de vol constaté ?", "Appeler la police", "Fouiller de force", "Exiger un paiement", "Garder la personne plusieurs heures", "L’inspection n’a lieu qu’en cas de suspicion de vol."],
+            ["g", "Quelles compétences sont propres à un poste précis (magasin, événement…) ?", "Les compétences liées aux activités", "Les compétences générales", "Les compétences situationnelles", "Les compétences judiciaires", "Générales = toute circonstance ; situationnelles = problème particulier (incident, refus, suspicion)."],
+            ["g", "Le contrôle est avant tout…", "Une mesure de prévention, pas une sanction", "Une sanction", "Une enquête judiciaire", "Un test de loyauté", "Rôle préventif, pas répressif : respect, politesse, calme et dignité humaine."],
+            ["e", "Que devient la défense si l’attaque est déjà terminée ?", "Ce n’est plus de la défense mais de la vengeance", "Elle reste légitime pendant 1 heure", "Elle reste proportionnée", "L’agent est couvert s’il est en service", "L’attaque doit être grave et actuelle, et la défense immédiate."],
+            ["e", "Peut-on invoquer la légitime défense contre un policier qui agit légalement ?", "Non, l’attaque doit être illégitime", "Oui, toujours", "Oui, si on a peur", "Oui, de nuit", "On ne peut pas se défendre contre une action légale (arrestation officielle)."],
+            ["e", "Quelle réponse est proportionnée ?", "Un coup de poing contre un coup de poing", "Une arme contre une simple poussée", "Plusieurs coups à un agresseur à terre", "Une poursuite après la fuite", "La réponse doit être nécessaire et adaptée."],
+            ["e", "Dans la communication face à une agression, que fait-on en premier ?", "Se présenter clairement (nom, fonction, autorité, mission)", "Proposer un faux choix", "Exécuter la décision", "Montrer de l’empathie", "Ordre : se présenter, dire les faits, empathie, solutions, exécuter."],
+            ["e", "Qu’est-ce qu’un bluff ?", "Une agressivité qui sert à impressionner plus qu’à attaquer", "Une attaque physique réelle", "Une technique de légitime défense", "Un type d’arme", "Bluff verbal (cris, menaces) ou non verbal (posture, regard). Beaucoup d’agressions s’arrêtent là."],
+            ["e", "Comment se libère-t-on d’une prise au poignet ?", "On cherche le point faible, on tourne le poignet vers le pouce de l’agresseur et on recule", "On tire de toutes ses forces", "On frappe au visage", "On reste immobile", "Se dégager puis reculer immédiatement."],
+            ["e", "Quelle est la différence entre violence matérielle et immatérielle ?", "Matérielle = coups, blessures, vandalisme ; immatérielle = menaces, insultes, harcèlement", "Matérielle = psychologique ; immatérielle = physique", "Elles ne coexistent jamais", "Seule la matérielle est de la violence", "Les deux peuvent exister en même temps."],
+            ["c", "Qu’est-ce que la culture ?", "L’ensemble des valeurs, normes, traditions et pratiques d’un groupe", "Uniquement l’art et la musique", "Les lois d’un pays", "Le niveau d’études", "Elle s’apprend dès la naissance (éducation, formation, environnement)."],
+            ["c", "Quelles sont les 3 composantes du triangle culturel ?", "Nature humaine, culture, personnalité", "Famille, école, amis", "Valeurs, normes, lois", "Symboles, héros, rituels", "Nature humaine = besoins communs ; culture = propre à un groupe ; personnalité = unique."],
+            ["c", "Quel est le symbole le plus important d’une culture ?", "Le langage (verbal et corporel)", "Les vêtements", "La nourriture", "Les drapeaux", "Un symbole n’a pas de lien naturel avec ce qu’il représente et n’est pas universel."],
+            ["c", "Qu’est-ce qu’une sous-culture ?", "Un groupe qui s’écarte de la culture dominante avec ses propres codes", "Une culture inférieure", "La culture dominante", "Une culture disparue", "Souvent chez les jeunes (musique, vêtements, comportements)."],
+            ["c", "Quelle est la différence entre culture du « je » et du « nous » ?", "Je = individu, liberté, autonomie ; nous = groupe, famille, rôles sociaux", "Je = groupe ; nous = individu", "Je = religieuse ; nous = laïque", "Il n’y en a pas", "Aucune culture n’est meilleure qu’une autre."],
+            ["c", "Qu’est-ce que le choc culturel ?", "Les tensions ou incompréhensions quand des cultures différentes se rencontrent", "Une maladie", "Un conflit armé", "La perte de sa langue", "Les différences culturelles ne sont ni bonnes ni mauvaises : elles sont différentes."],
+            ["c", "Comment un agent doit-il agir face à la diversité ?", "De façon neutre et objective, sans discrimination, en respectant les droits fondamentaux", "Selon ses opinions", "En favorisant sa propre culture", "En évitant certains publics", "Il ne laisse jamais ses opinions personnelles influencer son comportement."],
+            ["m", "Quels sont les éléments du schéma de communication ?", "Émetteur, message, canal, destinataire, feed-back, parasites, cadre de référence", "Émetteur, plainte, radio, police", "Message, code, alarme", "Émetteur et récepteur uniquement", "La communication est bidirectionnelle."],
+            ["m", "À quoi sert le feed-back ?", "À vérifier que le message a été compris", "À interrompre l’émetteur", "À éviter d’écouter", "À remplacer le message", "Il limite la perte d’information de l’entonnoir de communication."],
+            ["m", "Combien de zones de distance existe-t-il ?", "4 : intime, personnelle, sociale, publique", "2", "3", "5", "La distance montre le type de relation."],
+            ["m", "Que fait-on quand on reformule ?", "On redit avec ses mots pour vérifier sa compréhension", "On corrige l’autre", "On change de sujet", "On termine ses phrases", "Ex. : « Si j’ai bien compris… »."],
+            ["m", "Quel type de question faut-il éviter ?", "Les questions orientées (« N’est-ce pas vrai que… »)", "Les questions ouvertes", "Les questions fermées pour préciser", "Les reformulations", "On préfère les questions ouvertes."],
+            ["m", "Quel est le rôle de l’uniforme d’un agent ?", "Inspirer le respect, rassurer et identifier la fonction", "Intimider", "Se cacher", "Remplacer la communication", "L’apparence donne une première impression très importante."],
+            ["m", "Quelle est la méthode pour traiter une plainte ?", "Écouter, reconnaître, comprendre, clarifier, proposer une solution, agir vite, clôturer", "Se justifier, nier, rediriger", "Proposer une solution avant d’écouter", "Promettre l’impossible", "D’abord l’attention, ensuite la solution."],
+            ["m", "Quel message radio est une urgence (et non une détresse) ?", "Une porte bloquée ou un ascenseur défectueux", "Une agression", "Une chute grave", "Le début de service", "Informatif = début/fin de service ; urgence = intervention rapide ; détresse = danger pour une personne."],
+            ["r", "Qui est l’autorité compétente au niveau communal ?", "Le bourgmestre", "Le gouverneur", "Le ministre", "Le commissaire", "Provincial = gouverneur ; fédéral = ministre (Intérieur / Santé publique)."],
+            ["r", "Que fait le PC-Ops ?", "Il dirige les actions sur le terrain et coordonne toutes les disciplines", "Il définit la stratégie politique", "Il gère uniquement la presse", "Il gère uniquement le ravitaillement", "Il centralise les infos, donne les ordres et rédige les rapports (SitRep)."],
+            ["r", "Quelles sont les 5 disciplines ?", "Secours, médical, police, appui logistique, information", "Police, armée, pompiers, justice, presse", "Secours, évacuation, alarme, accueil, rapport", "Incendie, médical, gardiennage, logistique, comité", "Dir-SI, Dir-Med, Dir-Pol, Dir-Log, Dir-Info."],
+            ["r", "Que fait la discipline 2 (secours médicaux) ?", "Soins, transport des victimes et soutien psychosocial", "Maintien de l’ordre", "Extinction des feux", "Information de la population", "Identification : vert."],
+            ["r", "Que contient un plan d’évacuation ?", "Quoi faire, où aller et par où sortir, avec au minimum 2 issues de secours", "Seulement l’emplacement des extincteurs", "Le nom de celui qui a déclenché l’alarme", "Les horaires des agents", "Il est obligatoire et affiché, avec des pictogrammes."],
+            ["r", "Que faire face à un engin explosif improvisé ?", "Ne jamais le toucher ni le déplacer, prévenir les secours, envisager l’évacuation", "Le déplacer à l’extérieur", "Le démonter", "L’ignorer", "On attend les professionnels."],
+            ["r", "Quelle est la différence entre calamité, catastrophe et sinistre ?", "Calamité = d’origine humaine ; catastrophe = naturelle ; sinistre = événement local", "Calamité = naturelle ; catastrophe = humaine", "Ce sont des synonymes", "Sinistre = événement mondial", "Ex. : crash ou explosion industrielle, tempête, accident de la route."],
+            ["i", "Qu’est-ce que le point d’éclair ?", "La température à laquelle un produit émet assez de vapeurs pour s’enflammer", "La température d’un feu éteint", "La température d’auto-inflammation", "La température où la combustion continue sans flamme", "Point d’inflammation = la combustion continue ; auto-inflammation = le produit s’enflamme seul."],
+            ["i", "Quelle combustion produit du CO ?", "La combustion incomplète (manque d’oxygène)", "La combustion complète", "Aucune", "Seulement les feux de gaz", "La combustion complète produit surtout du CO₂."],
+            ["i", "Quelle catégorie correspond aux graisses de friture ?", "F", "A", "B", "D", "Eau interdite : on utilise un extincteur spécial graisses."],
+            ["i", "À quoi sert le compartimentage ?", "Limiter la propagation du feu et gagner du temps pour évacuer", "Faciliter la ventilation", "Remplacer les extincteurs", "Augmenter l’oxygène", "Une porte coupe-feu ouverte rend le compartimentage inutile."],
+            ["i", "Qu’est-ce qu’un permis de feu ?", "Un document obligatoire pour les travaux à risque (soudure, flamme nue, meulage)", "L’autorisation de fumer", "Un plan d’évacuation", "Un certificat d’extincteur", "L’agent vérifie qu’il existe, contrôle les consignes et surveille les lieux après les travaux."],
+            ["i", "Quelle est la cause la plus fréquente des incendies ?", "Les causes humaines", "Les causes naturelles", "La foudre", "Les causes techniques", "Volontaire, négligence, imprudence, indifférence, erreurs, ignorance. Les causes techniques sont surtout électriques."],
+            ["i", "Comment fonctionne une tête de sprinkler ?", "Une ampoule de verre éclate sous la chaleur et l’eau part là où il y a le feu", "Toutes les têtes se déclenchent ensemble", "Elle fonctionne uniquement avec du gaz", "Elle se déclenche à la main", "Déclenchement local, rapide et automatique."],
+            ["i", "Quel extincteur convient aux feux électriques ?", "CO₂", "Mousse", "Eau (dévidoir)", "Sable", "La mousse ne s’utilise pas sur des feux électriques ; le dévidoir ne convient qu’aux feux de solides."],
+            ["s", "Quelle loi régit le contrat de travail ?", "La loi du 3 juillet 1978", "La loi du 16 mars 1971", "L’AR du 28 mars 2014", "L’AR du 16 février 2006", "La loi de 1971 règle la durée du travail, le repos, le travail de nuit et du dimanche."],
+            ["s", "Quel organe est obligatoire dès 100 travailleurs ?", "Le conseil d’entreprise", "Le CPPT", "La délégation syndicale", "Aucun", "Missions du CE : information, consultation, décision, contrôle."],
+            ["s", "Quel document est obligatoire dans toutes les entreprises ?", "Le règlement de travail", "Le conseil d’entreprise", "Le CPPT", "Un plan de formation", "Il contient horaires, paiement du salaire, règles internes, préavis. Une copie pour chaque travailleur."],
+            ["s", "Combien de temps l’employeur a-t-il pour répondre à une demande d’accès aux données ?", "45 jours", "7 jours", "15 jours", "6 mois", "Droits du travailleur : accès, correction, opposition."],
+            ["s", "Que faut-il pour utiliser des caméras sur le lieu de travail ?", "Informer les travailleurs et poser un panneau visible", "Rien de particulier", "Des caméras cachées", "L’accord de la police", "Caméras autorisées pour la sécurité, la protection des biens, le contrôle de production ou du travail (temporaire)."],
+            ["s", "Qu’est-ce qu’un faux indépendant ?", "Quelqu’un déclaré indépendant mais qui travaille comme un salarié", "Un salarié à temps partiel", "Un étudiant", "Un intérimaire", "L’inspection peut requalifier en contrat de travail ; en cas de désaccord, le tribunal tranche."],
+            ["s", "Que signifie la classe « S » chez les ouvriers (CP 317) ?", "Agent statique", "Agent mobile", "Brigadier", "Transport de fonds", "M = mobile ; BI = brigadier / instructeur ; TFA = transport de fonds."],
+            ["s", "Combien de jours fériés dans la CP 317 ?", "11 (10 légaux + 1 communautaire)", "8", "10", "13", "Ils sont payés pendant le mois."],
+            ["i", "Qu’est-ce qui peut provoquer l’inflammation de gaz de combustion ?", "Le mélange de gaz inflammables avec de l’oxygène à la sortie de la pièce", "L’augmentation de la température ambiante", "L’usage de l’eau pour neutraliser les gaz", "Fermer toutes les fenêtres et portes", "Question de ton entraînement blanc (branche 11)."],
+            ["m", "Qu’est-ce que la terminologie radio ?", "Le langage et les codes utilisés spécifiquement sur un réseau radio", "Une manière formelle de communiquer par e-mail", "Un langage standard pour toutes les conversations radio", "Un ensemble de gestes utilisés pendant la communication radio", "Question de ton entraînement blanc (branche 04)."],
+            ["e", "Quelle action correspond au premier fondement de la technique de communication ?", "Se présenter clairement et avec assurance", "Montrer de l’empathie pour apaiser", "Proposer des solutions en laissant place à la discussion", "Nommer l’incident précisément", "Question de ton entraînement blanc (branche 08)."],
+            ["o", "Que faire si vous repérez un véhicule suspect ?", "Avertir la police et éviter toute autre action", "Approcher le conducteur et lui poser des questions", "Examiner le véhicule vous-même pour voir s’il est dangereux", "Suivre le véhicule pour identifier le conducteur", "Question de ton entraînement blanc (branche 07)."],
+            ["b", "Qu’est-ce qu’un agent de gardiennage ne doit pas faire dans ses relations avec la presse ?", "Faire ses propres déclarations", "Renvoyer au magistrat ou au juge d’instruction", "En référer à la direction", "Répondre aux questions par « pas de commentaire »", "Question de ton entraînement blanc (branche 01)."],
+            ["b", "Quelle activité fait partie de la sécurité privée ?", "Prévention de la criminalité et des nuisances publiques", "L’application de la loi", "Collecte d’informations", "Toutes les réponses ci-dessus sont correctes", "Question de ton entraînement blanc (branche 01)."],
+            ["s", "Quel est le rôle du Conseil national du travail (CNT) ?", "Conseiller le gouvernement sur les questions sociales", "Contrôler les entreprises sur la législation sociale", "Imposer des sanctions aux employeurs", "Rédiger des contrats de travail individuels", "Question de ton entraînement blanc (branche 12)."],
+            ["b", "Quelle peut être la conséquence de la corruption pour l’agent de gardiennage ?", "Toutes les réponses ci-dessus sont correctes", "Un désavantage pour le client", "Désavantage pour les collègues", "Inconvénient pour l’agent lui-même", "Question de ton entraînement blanc (branche 01)."],
+            ["o", "Quel est l’objectif d’un rapport de dommages ?", "Consigner les incidents quotidiens", "Signaler les dommages causés par l’agent de gardiennage lui-même", "Informer sur les comportements suspects", "Enregistrer tous les accidents", "Question de ton entraînement blanc (branche 07). Réponse marquée sur ta capture, mais à vérifier dans ton cours."],
+            ["b", "Quelle est la condition la plus importante pour communiquer avec la presse dans le secteur de la surveillance ?", "Respecter le professionnalisme et la discrétion obligatoires", "Montrer ses opinions et sentiments personnels sur une situation", "Répondre rapidement à toute demande de renseignements de la part de la presse", "Faire ses propres déclarations au nom de l’organisation", "Question de ton entraînement blanc (branche 01)."],
+            ["m", "Qu’est-ce qui provoque un bruit externe dans la communication ?", "Des obstacles techniques ou physiques dans le canal de communication", "Les similarités culturelles entre l’émetteur et le récepteur", "Des facteurs personnels comme les expériences passées", "Le cadre de référence du récepteur", "Question de ton entraînement blanc (branche 04)."],
+            ["c", "Quelles valeurs doivent être conservées dans une société multiculturelle ?", "Égalité, neutralité de la loi et protection de l’intérêt général", "Permettre toutes les pratiques sans loi", "Interdire certaines pratiques culturelles jugées inappropriées", "Promouvoir une culture dominante", "Question de ton entraînement blanc (branche 06)."],
+            ["r", "Qu’est-ce qu’un Poste de Commandement Opérationnel (PC-Ops) ?", "Un poste central où les responsables opérationnels dirigent les opérations", "Un lieu d’accueil temporaire pour les évacués", "Une cellule multidisciplinaire de coordination politique", "Un centre de formation pour les services d’urgence", "Question de ton entraînement blanc (branche 09)."],
+            ["m", "Quelle est la définition de la communication ?", "Un processus d’échange d’informations", "La transmission de messages sans intention", "Un processus dans lequel seul l’émetteur est actif", "L’utilisation exclusive de symboles non verbaux", "Question de ton entraînement blanc (branche 04)."],
+            ["c", "Quelle est la première étape du modèle de Cooper ?", "Décrire la situation aussi objectivement que possible", "Choisir la meilleure solution", "Analyser les conséquences possibles", "Identifier les parties concernées", "Question de ton entraînement blanc (branche 06)."],
+            ["m", "Quelle est une caractéristique du feedback dans le processus de communication ?", "Il permet une communication bidirectionnelle", "Il est toujours pleinement conscient", "Il rend toute interaction superflue", "Il limite l’interprétation de l’émetteur", "Question de ton entraînement blanc (branche 04)."],
+            ["c", "Quelle est une caractéristique des cultures individualistes ?", "L’individu et ses intérêts personnels sont au centre, la culture est tournée vers l’avenir", "L’intérêt du groupe prime toujours", "L’accent est mis sur la responsabilité collective", "La famille détermine le comportement de l’individu", "Question de ton entraînement blanc (branche 06)."],
+            ["a", "Quelle zone du territoire personnel est comprise entre 40 cm et 1,5 mètre ?", "La zone personnelle", "La zone sociale", "La zone publique", "La zone intime", "Question de ton entraînement blanc (branche 05)."],
+            ["o", "Quelle est la différence entre observation et surveillance ?", "La surveillance est proactive, l’observation est passive", "L’observation est uniquement technologique", "L’observation est toujours préventive", "L’observation est faite par des agents de gardiennage, la surveillance par les autorités ou les criminels", "Question de ton entraînement blanc (branche 07)."],
+            ["s", "Quel est l’accord dont la hiérarchie juridique est la plus élevée ?", "Une convention collective déclarée universellement contraignante", "Un contrat de travail individuel oral", "Une réglementation du travail", "Un règlement interne d’entreprise", "Question de ton entraînement blanc (branche 12)."],
+            ["i", "Laquelle des affirmations suivantes est correcte ?", "Le monoxyde de carbone (CO) est incolore, inodore, sans goût et toxique", "Le monoxyde de carbone (CO) est un agent extincteur adapté aux appareils électriques", "Le dioxyde de carbone (CO₂) est toxique et résulte d’une combustion incomplète", "Le dioxyde de carbone (CO₂) est toxique et possède une forte odeur", "Question de ton entraînement blanc (branche 11)."],
+            ["a", "Qu’est-ce qui caractérise le style combatif dans la gestion des conflits ?", "Imposer ses intérêts au détriment de l’autre par domination", "Éviter la confrontation", "Chercher un compromis équilibré", "Préserver la relation au détriment de soi", "Question de ton entraînement blanc (branche 05)."],
+            ["e", "Quand une réaction est-elle autorisée selon les conditions de la légitime défense ?", "Lors d’une attaque illégitime au début ou en cours", "Avant le début de l’attaque", "Lors d’une attaque légitime", "Un certain temps après l’attaque", "Question de ton entraînement blanc (branche 08)."],
+            ["e", "Quel est un objectif important de la technique de communication lors d’une appréhension ?", "Éviter l’escalade et les incidents", "Faire monter la tension pour garder le contrôle", "Éviter complètement le dialogue", "Imposer des ordres de manière autoritaire sans empathie", "Question de ton entraînement blanc (branche 08)."],
+            ["r", "Que se passe-t-il lorsqu’une alarme se déclenche dans un bâtiment ?", "Le signal d’évacuation est déclenché et les gens évacuent", "Les personnes restent assises et attendent les instructions", "Toutes les personnes doivent immédiatement évacuer", "L’équipe d’intervention vérifie sur place s’il y a un danger", "Question de ton entraînement blanc (branche 09)."],
+            ["o", "Quelle est la définition de l’insécurité subjective ?", "Le sentiment d’insécurité ressenti par une personne confrontée à une situation", "Le degré de danger réel d’une situation", "Le nombre de facteurs de risque observés", "Le résultat d’une enquête juridique", "Question de ton entraînement blanc (branche 07)."],
+            ["e", "Que devez-vous faire après avoir appliqué une technique d’évitement qui a touché le nez ou les yeux de l’opposant ?", "Vous éloigner en effectuant une rotation", "Rester en place et attendre de l’aide", "Attaquer immédiatement l’opposant", "Le maintenir fermement", "Question de ton entraînement blanc (branche 08)."],
+            ["b", "Quelle activité n’entre pas dans les attributions d’une société de systèmes de caméras ?", "Enregistrer directement les séquences d’une caméra sans autorisation", "Effectuer la maintenance des caméras de surveillance existantes", "Réparer les caméras de surveillance défectueuses", "Développer le concept d’un système de caméras", "Question de ton entraînement blanc (branche 01)."],
+            ["a", "Qu’est-ce qui caractérise la phase « perdant-perdant » d’un conflit ?", "Le conflit devient secondaire, les parties veulent se nuire mutuellement", "Les parties coopèrent pour un compromis", "La communication s’améliore", "Il y a compréhension mutuelle", "Question de ton entraînement blanc (branche 05)."],
+            ["c", "Comment la période historique influence-t-elle la culture ?", "Elle peut pousser les gens à rechercher du soutien dans la religion, surtout en période de crise", "Elle réduit l’influence des facteurs externes", "Elle favorise des découvertes scientifiques", "Elle conduit à la disparition de certains rituels", "Question de ton entraînement blanc (branche 06)."],
+            ["b", "Qu’est-ce qu’un agent de gardiennage d’une entreprise de transport public ?", "Une personne qui veille à la sécurité et au maintien de l’ordre sur les sites de transport public", "Un employé chargé de l’entretien des véhicules et des stations", "Un consultant externe qui donne des conseils de sécurité aux opérateurs de transport", "Un agent qui prend des mesures de sécurité à l’extérieur des sites des entreprises de transport", "Question de ton entraînement blanc (branche 01)."],
+            ["a", "Comment réagir à une agression instrumentale ?", "Montrer que le comportement est inacceptable sans attaquer la personne", "Attaquer personnellement l’agresseur", "Ignorer le comportement", "Imposer ses propres valeurs", "Question de ton entraînement blanc (branche 05)."],
+            ["g", "Que doivent faire les agents après avoir appréhendé une personne ?", "La soustraire à la vue du public et prévenir la police", "La garder enfermée jusqu’à l’arrivée des forces de l’ordre", "Donner un avertissement et relâcher", "L’emmener immédiatement au commissariat", "Question de ton entraînement blanc (branche 13)."],
+            ["e", "Quelle est la meilleure façon de survivre à une bagarre ?", "Éviter la bagarre", "Passer immédiatement à l’action", "Attendre que l’autre se calme", "Confronter l’autre par le dialogue", "Question de ton entraînement blanc (branche 08)."],
+            ["m", "Quelle est une manière de visualiser la communication ?", "Utiliser des graphiques, des images et des métaphores pour attirer l’attention", "Utiliser uniquement du texte écrit", "Ne se servir que de métaphores", "Éviter toute imagerie", "Question de ton entraînement blanc (branche 04)."],
+            ["b", "Parmi les activités suivantes, laquelle fait partie des soins de sécurité privés ?", "La prévention", "Politique des ressources humaines", "Le contrôle financier", "Stratégies de marketing", "Question de ton entraînement blanc (branche 01)."],
+            ["b", "Quel est l’objectif d’une démarche préventive au sein d’une entreprise ?", "Reconnaître et évaluer les risques", "Maximiser les profits", "Améliorer les stratégies de marketing", "Augmenter la productivité", "Question de ton entraînement blanc (branche 01)."],
+            ["i", "Que signifie « limites d’explosivité » ?", "La concentration d’un gaz dans l’air à laquelle il devient explosif", "La chaleur nécessaire pour enflammer un gaz", "La température à laquelle un gaz s’enflamme", "La quantité d’oxygène nécessaire à la combustion d’un gaz", "Question de ton entraînement blanc (branche 11)."],
+            ["s", "En quoi une convention collective sectorielle diffère-t-elle d’une convention collective nationale ?", "Une convention collective sectorielle ne s’applique qu’à un secteur spécifique", "Une convention collective sectorielle est élaborée par le gouvernement", "Une convention collective sectorielle est contraignante pour toutes les entreprises en Belgique", "Une convention collective sectorielle est toujours facultative pour les employeurs", "Question de ton entraînement blanc (branche 12)."],
+            ["r", "Quelles sont les cinq étapes d’une évacuation ?", "Danger – alarme – évacuation – contrôle – soutien des secours", "Alarme – danger – contrôle – évacuation – secours", "Danger – alarme – contrôle – évacuation – secours", "Danger – alarme – secours – évacuation – contrôle", "Question de ton entraînement blanc (branche 09)."],
+            ["c", "Quelle est la définition d’une sous-culture ?", "Un groupe de personnes partageant des convictions et un mode de vie distincts de la culture dominante", "Une culture qui correspond entièrement à la culture dominante", "Une culture axée sur le respect des lois", "Une culture toujours acceptée par la culture dominante", "Question de ton entraînement blanc (branche 06)."],
+            ["m", "Quel est un aspect important de la communication verbale en face-à-face ?", "Parler dans la langue du récepteur, si possible", "Utiliser des mots de remplissage pour gagner du temps", "Parler en jargon, quel que soit le public", "Toujours envoyer un e-mail après l’échange", "Question de ton entraînement blanc (branche 04)."],
+            ["r", "Pourquoi ne faut-il pas représenter tout le bâtiment sur un plan d’évacuation dans de grands édifices ?", "Parce que cela provoque de la confusion", "Parce que le plan serait trop compliqué à lire", "Parce que la loi l’exige", "Parce qu’un extrait du bâtiment est plus utile qu’un plan complet", "Question de ton entraînement blanc (branche 09)."],
+            ["c", "Quelle est la définition de la culture ?", "L’ensemble des valeurs et normes sociales, religieuses, intellectuelles et artistiques propres à une communauté", "Seulement les croyances religieuses d’une communauté", "Les règles créées par une communauté pour ses membres", "Seulement les valeurs artistiques d’une communauté", "Question de ton entraînement blanc (branche 06)."],
+            ["m", "Pourquoi est-il important de poser des questions ouvertes lors d’un entretien de plainte ?", "Pour mieux comprendre la plainte", "Pour proposer une solution sans explication", "Pour seulement recueillir des détails", "Pour faire croire que le problème sera vite réglé", "Question de ton entraînement blanc (branche 04)."],
+            ["m", "Dans un processus de communication, cinq étapes sont suivies. Quelle est la bonne séquence ?", "(1) codage de l’information, (2) envoi de l’information codée, (3) réception de l’information codée, (4) décodage de l’information reçue, (5) retour/feedback du récepteur vers l’émetteur", "(1) codage de l’information, (2) envoi de l’information codée, (3) réception de l’information codée, (4) retour/feedback du récepteur vers l’émetteur, (5) décodage de l’information reçue", "", "", "Question de ton entraînement blanc (branche 04)."],
+            ["b", "Quel est un exemple de dommage direct ?", "Dommages corporels", "Perte de clientèle", "Perte d’image", "Perte de fonctionnement", "Question de ton entraînement blanc (branche 01)."],
+            ["g", "Quelle affirmation est incorrecte concernant un contrôle de sécurité ?", "Un contrôle de sécurité doit obligatoirement être effectué lors d’une interpellation", "Un contrôle de sécurité vise uniquement à détecter des armes ou d’autres objets dangereux", "Un contrôle de sécurité est effectué après qu’une interpellation a eu lieu", "Les exigences de genre ne s’appliquent pas, mais il est préférable qu’il soit effectué par une personne du même sexe", "Question de ton entraînement blanc (branche 13)."],
+            ["i", "Que sont les liquides polaires ?", "Des liquides qui ont une forte affinité avec l’eau", "Des liquides difficilement miscibles à l’eau", "Des liquides uniquement solubles dans l’eau", "Des liquides qui ne réagissent pas avec l’eau", "Question de ton entraînement blanc (branche 11)."],
+            ["i", "Que fait un extincteur à poudre rapide sur des feux de classes A, B et C ?", "Il provoque une catalyse négative et une asphyxie via un nuage de poudre", "Il ajoute de l’oxygène", "Il augmente la température pour étouffer le feu", "Il éteint le feu avec de l’eau", "Question de ton entraînement blanc (branche 11)."],
+            ["g", "Que se passe-t-il si un objet illégal est découvert au contrôle d’accès ?", "La police est immédiatement informée et l’accès est refusé", "L’objet est accepté et la personne entre", "La personne est autorisée à entrer et signalée plus tard", "L’objet est confisqué sans suite", "Question de ton entraînement blanc (branche 13)."],
+            ["i", "Qu’est-ce qu’un « flashover » ?", "L’inflammation soudaine d’une couche de gaz chauds, enflammant tout l’espace", "La propagation lente d’un incendie", "La libération progressive de gaz", "La montée en température d’une zone", "Question de ton entraînement blanc (branche 11)."],
+            ["b", "Quelle caractéristique est importante pour qu’un agent de gardiennage puisse prendre des mesures préventives efficaces ?", "L’assurance", "Connaissances techniques", "Créativité", "Connaissances financières", "Question de ton entraînement blanc (branche 01). Réponse marquée sur ta capture, mais à vérifier dans ton cours."],
+            ["b", "De quoi dépend l’efficacité de la déontologie ?", "De la manière dont les règles sont transmises aux employés, de l’attitude des employés et du contrôle des sanctions", "De la formation des salariés", "De la taille de l’organisation", "Uniquement de la présence de règles au sein de l’organisation", "Question de ton entraînement blanc (branche 01)."],
+            ["c", "Que faut-il faire pour bien communiquer en contexte interculturel ?", "Tenir compte de la notion d’honneur et de honte dans d’autres cultures", "Adapter complètement ses attentes à l’autre culture", "Observer uniquement le comportement", "Utiliser uniquement une communication directe", "Question de ton entraînement blanc (branche 06)."],
+            ["s", "Dans quelle catégorie de rémunération un agent statique est-il monolingue ?", "SB", "SPT", "SMP", "M1", "Question de ton entraînement blanc (branche 12)."],
+            ["r", "Que prévoit le soutien logistique en matière de communication ?", "Organiser la communication entre disciplines, poste de commandement et comité de coordination", "Fournir des appareils au public", "Coordonner les communiqués de presse", "Fournir des canaux aux victimes", "Question de ton entraînement blanc (branche 09)."],
+            ["o", "Que faut-il faire d’abord lors d’une ronde ?", "Commencer par l’extérieur puis l’intérieur", "Passer par le centre du couloir", "Commencer par l’intérieur", "Prendre l’ascenseur pour monter", "Question de ton entraînement blanc (branche 07)."],
+            ["e", "En quoi la violence immatérielle diffère-t-elle de la violence matérielle ?", "Elle est de nature psychologique, comme le harcèlement ou les menaces", "Elle est toujours dirigée vers des groupes sociaux", "Elle inclut uniquement des actes involontaires", "Elle vise uniquement des objets", "Question de ton entraînement blanc (branche 08)."],
+            ["e", "Quelles deux situations sont toujours considérées comme légitime défense selon l’article 417 du Code pénal ?", "Une effraction de nuit dans une maison habitée et un vol avec violence contre les personnes", "Des agressions sur les biens et blessures", "Des comportements suspects dans des lieux publics", "Un vol sans violence", "Question de ton entraînement blanc (branche 08)."],
+            ["e", "Quelle est la caractéristique principale d’un comportement agressif ?", "Il est destiné à blesser quelqu’un qui ne veut pas l’être", "Il découle toujours de la légitime défense", "Il est toujours altruiste", "Il n’est jamais dirigé vers autrui", "Question de ton entraînement blanc (branche 08)."],
+            ["b", "Quelle est la définition d’un danger ?", "La possibilité ou la probabilité qu’une calamité ou un dommage puisse résulter de certaines circonstances", "Une situation qui ne peut jamais être contrôlée", "Un événement qui ne se produit que dans des situations extrêmes", "Un problème inévitable qui cause toujours des dommages", "Question de ton entraînement blanc (branche 01)."],
+            ["i", "Quelle est l’obligation de l’employeur selon la législation sur la prévention incendie ?", "Effectuer une analyse des risques d’incendie", "Installer des systèmes d’extinction automatiques", "Réaliser régulièrement des exercices d’évacuation", "Organiser des cours pour les clients", "Question de ton entraînement blanc (branche 11)."],
+            ["r", "Que faut-il faire en cas de menace CBR (chimique, biologique, radiologique) présumée ?", "Appeler les secours (112) et attendre leur arrivée", "Tenter de résoudre la situation par soi-même", "Ouvrir la pièce contaminée pour permettre la ventilation", "Amener immédiatement les personnes contaminées à l’hôpital", "Question de ton entraînement blanc (branche 09)."],
+            ["a", "Que signifie « connaître ses déclencheurs » en cas d’agression due à la frustration ?", "Identifier ce qui active le comportement de l’agresseur, comme ses vulnérabilités personnelles", "Éviter toute confrontation", "Connaître les points faibles des autres pour les aider", "Ignorer totalement les autres et leurs émotions", "Question de ton entraînement blanc (branche 05)."],
+            ["e", "Pourquoi les compétences physiques sont-elles nécessaires face à la violence ?", "Pour créer de la distance et pouvoir agir", "Pour neutraliser toute forme de violence", "Pour répondre à la violence par plus de violence", "Pour contrôler la situation sans aide", "Question de ton entraînement blanc (branche 08)."],
+            ["s", "La CCT 68 concerne les conditions dans lesquelles une surveillance par caméra sur le lieu de travail peut être mise en place avec ou sans conservation des images. Parmi les conditions suivantes, lesquelles s’appliquent ?", "Sécurité et santé du travailleur, protection des biens, contrôle du travail du travailleur, contrôle du processus", "Sécurité et santé des travailleurs, protection des biens, contrôle du travail des travailleurs et uniquement par des agents de surveillance", "", "", "Question de ton entraînement blanc (branche 12)."],
+            ["o", "Pourquoi la concentration est-elle importante en observation ?", "Pour utiliser au mieux tous ses sens", "Pour élargir la gamme des impressions", "Pour aller plus vite dans ses tâches", "Pour supprimer les réactions instinctives", "Question de ton entraînement blanc (branche 07)."],
+            ["i", "Comment éteindre au mieux un feu de classe A au stade de braise ?", "Avec de l’eau, en s’assurant d’éteindre les braises restantes", "Avec de l’eau et en éteignant immédiatement", "En arrêtant l’alimentation en oxygène", "Avec un extincteur à mousse", "Question de ton entraînement blanc (branche 11)."],
+            ["a", "Qu’est-ce qu’un conflit interpersonnel ?", "Un conflit entre deux personnes ou plus", "Un conflit sans besoins ou émotions contradictoires", "Un conflit imaginaire dans l’esprit d’un individu", "Un conflit entre une personne et son environnement", "Question de ton entraînement blanc (branche 05)."],
+            ["b", "Qu’est-ce qui n’appartient pas au secteur de la surveillance ?", "Entreprises de systèmes de caméras", "Les sociétés d’analyse de risques", "Sociétés de conseil en sécurité", "La surveillance privée", "Question de ton entraînement blanc (branche 01)."],
+            ["s", "Que se passe-t-il lors de la reprise d’un contrat commercial dans la CP 317 ?", "Les employés conservent leur salaire et leurs conditions de travail", "Les salariés bénéficient d’une période d’essai de six mois", "L’ancien employeur reste responsable des salariés", "Le nouvel employeur peut proposer un nouveau contrat aux employés", "Question de ton entraînement blanc (branche 12)."],
+            ["g", "Qui est contrôlé lors du contrôle de sortie générique ?", "Toutes les personnes quittant les lieux", "Seuls les employés quittant l’atelier", "Les personnes suspectes uniquement", "Les visiteurs uniquement", "Question de ton entraînement blanc (branche 13). Réponse marquée sur ta capture, mais à vérifier dans ton cours."],
+            ["i", "Quelle est la fonction du dossier d’intervention en cas d’incendie ?", "Être disponible à l’entrée pour aider les services de secours", "Nommer tous les employés du bâtiment", "Recenser tous les extincteurs", "Contenir uniquement des consignes internes", "Question de ton entraînement blanc (branche 11)."],
+            ["s", "Qu’est-ce qui détermine la commission paritaire dont relève une entreprise ?", "L’activité principale de l’entreprise", "Le lieu d’implantation de l’entreprise", "Le syndicat choisi par les travailleurs", "Le nombre de travailleurs dans l’entreprise", "Question de ton entraînement blanc (branche 12)."],
+            ["m", "Comment les agents de gardiennage apprennent-ils à utiliser les radios ?", "Par formation sur le terrain à leur propre poste", "Par une formation standard sur site centralisé", "Par des tutoriels vidéo", "En étudiant des manuels à domicile", "Question de ton entraînement blanc (branche 04)."],
+            ["e", "Pourquoi est-il important d’apprendre à gérer la peur face à des visiteurs agressifs ?", "Pour éviter de tomber dans des comportements défensifs tels que fuir ou attaquer", "Pour apprendre à fuir ou attaquer plus efficacement", "Pour ne pas irriter davantage le visiteur", "Pour éviter toute peur", "Question de ton entraînement blanc (branche 08)."],
+            ["a", "Quelle est une source de conflit ?", "Des intérêts ou objectifs contradictoires entre les parties impliquées", "L’absence d’émotions", "L’absence d’intérêts opposés", "Le manque de dépendance mutuelle", "Question de ton entraînement blanc (branche 05)."],
+            ["b", "Laquelle des activités suivantes ne relève pas des services d’une société de conseil en sécurité ?", "Conseiller les agences gouvernementales sur les questions de sécurité", "Développer des stratégies pour la sécurité des bâtiments", "La réalisation d’analyses pour la prévention des délits", "Dispenser des formations sur la sécurité et l’analyse des risques", "Question de ton entraînement blanc (branche 01)."]
+        ];
+        C = (function (o) { var n = {};['o', 's', 'b', 'a', 'm', 'c', 'g', 'e', 'i', 'r'].forEach(function (k) { n[k] = o[k] }); return n })(C);
+        var RT = ['o', 's'];
+        var S = {}; try { S = JSON.parse(localStorage.getItem("gd1") || "{}") } catch (e) { }
+        function save() { try { localStorage.setItem("gd1", JSON.stringify(S)) } catch (e) { } }
+        function st(i) { return S[i] || (S[i] = { s: 0, k: 0 }) }
+        var A = document.getElementById("app"), se = null;
+        function sh(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t } return a }
+        function ids(c) { var r = []; Q.forEach(function (q, i) { if (!c || q[0] == c) r.push(i) }); return r }
+        function errs() { return ids().filter(function (i) { var x = st(i); return x.k > 0 && x.s < 2 }) }
+        function mast(c) { var l = ids(c); return Math.round(100 * l.filter(function (i) { return st(i).s >= 2 }).length / l.length) }
+        function nt(k) { var l = ids(k), d = 0, g = 0; l.forEach(function (i) { var x = S[i]; if (x && x.l !== undefined) { d++; g += x.l } }); return { d: d, n: l.length, p: Math.round(100 * g / l.length) } }
+        function nl(k) { var t = nt(k); return t.d < t.n ? t.d + ' / ' + t.n + ' vues' : t.p + ' % ' + (t.p >= 50 ? '✓' : '✗') }
+        function bilan() {
+            var h = '<div class="top"><button class="btn alt" onclick="home()">← Accueil</button></div><h1>Bilan</h1><p class="mu">Note d’une matière = bonnes réponses du premier coup. Repêchage : il faut au moins 50 % dans chacune des 2 matières à repasser.</p>', all = 1, fail = [], sum = 0, n = 0;
+            for (var k in C) {
+                if (RT.indexOf(k) < 0) continue; var t = nt(k), ok = t.d == t.n && t.p >= 50; if (t.d < t.n) all = 0; else if (t.p < 50) fail.push(C[k][0]); sum += t.p; n++;
+                h += '<div class="card"><div class="t"><h3>' + C[k][0] + '</h3><b>' + (t.d < t.n ? 'à terminer' : t.p + ' % ' + (ok ? '✓' : '✗')) + '</b></div><div class="bar"><i style="width:' + t.p + '%"></i></div>' + (t.d < t.n ? '<button class="btn" onclick="go(\'' + k + '\')">Terminer</button>' : !ok ? '<button class="btn" onclick="go(\'' + k + '\')">Réviser</button>' : '') + '</div>'
+            }
+            var g = Math.round(sum / n);
+            h += '<h2 style="margin-top:24px">Note globale : ' + g + ' %' + (all ? '' : ' (provisoire)') + '</h2>';
+            h += !all ? '<p>Termine toutes les matières pour connaître ton verdict.</p>' : fail.length ? '<p>Pas encore : il manque 50 % en ' + fail.join(', ') + '. Courage, retente ces matières, tu progresses à chaque essai.</p>' : '<p><b>Félicitations !</b> Tu as au moins 50 % dans toutes les matières : tu aurais ton attestation.</p>';
+            A.innerHTML = h; window.scrollTo(0, 0)
+        }
+        function home() {
+            var e = errs().length, h = '<h1>Classe Z.08</h1><p class="mu">Repêchage le 3 novembre à 13 h (Zellik) : Observation, évaluation des risques et rapport + Rapports sociaux.</p><p class="mu">Réponds, lis l’explication, et les questions ratées reviennent pour que tu les retiennes.</p>';
+            h += '<p><b>Maîtrise globale : ' + mast() + ' %</b></p><div class="bar"><i style="width:' + mast() + '%"></i></div>';
+            h += '<div class="row"><button class="btn" onclick="go(\'rep\')">Repêchage blanc (20 questions)</button><button class="btn alt" onclick="go(\'x\')">Examen blanc complet</button><button class="btn alt" onclick="bilan()">Bilan</button><button class="btn alt" onclick="go(\'err\')"' + (e ? '' : ' disabled') + '>Mes erreurs (' + e + ')</button></div>';
+            for (var k in C) { h += '<div class="card"><div class="t"><h3>' + C[k][0] + (RT.indexOf(k) >= 0 ? ' <span class="rt">repêchage</span>' : '') + '</h3><span class="mu">' + nl(k) + '</span></div><p class="mu">' + C[k][1] + '</p><div class="bar"><i style="width:' + mast(k) + '%"></i></div><button class="btn" onclick="go(\'' + k + '\')">S’entraîner</button></div>' }
+            h += '<p><button class="btn alt" onclick="if(confirm(\'Effacer toute ta progression ?\')){S={};save();home()}">Réinitialiser</button></p>';
+            A.innerHTML = h; window.scrollTo(0, 0)
+        }
+        function go(m) {
+            var l = m == "x" ? sh(ids()).slice(0, 20) : m == "rep" ? sh(ids("o").concat(ids("s"))).slice(0, 20) : m == "err" ? errs() : ids(m); if (!l.length) return;
+            se = { q: sh(l), n: l.length, f: 0, ok: 0, miss: [], re: {}, m: m }; nxt()
+        }
+        function nxt() {
+            if (!se.q.length) return res();
+            var i = se.q[0], q = Q[i], o = sh([2, 3, 4, 5].filter(function (x) { return q[x] })), h = '<div class="top"><button class="btn alt" onclick="home()">← Accueil</button><span class="mu">' + se.f + ' / ' + se.n + ' réussies ou vues</span></div><div class="bar"><i style="width:' + 100 * se.f / se.n + '%"></i></div>';
+            h += (se.re[i] ? '<p class="tag">À revoir : tu t’es trompé sur celle-ci</p>' : '<p class="mu">' + C[q[0]][0] + '</p>') + '<h2>' + q[1] + '</h2><div id="o">';
+            o.forEach(function (x, n) { h += '<button class="opt" onclick="ans(' + n + ',' + x + ')">' + q[x] + '</button>' });
+            A.innerHTML = h + '</div><div id="fb"></div>'; se.o = o; window.scrollTo(0, 0)
+        }
+        function ans(n, x) {
+            var i = se.q.shift(), q = Q[i], ok = x == 2, b = document.querySelectorAll(".opt"), s = st(i);
+            b.forEach(function (e, m) { e.disabled = true; if (se.o[m] == 2) e.classList.add("ok"); else if (m == n) e.classList.add("ko") });
+            if (!se.re[i]) s.l = ok ? 1 : 0; if (ok) { s.s++; if (!se.re[i]) { se.ok++ } se.f++ } else { s.s = 0; s.k++; se.re[i] = 1; if (se.miss.indexOf(i) < 0) se.miss.push(i); se.q.splice(Math.min(3, se.q.length), 0, i) }
+            save();
+            document.getElementById("fb").innerHTML = '<div class="fb ' + (ok ? 'ok' : 'ko') + '"><b>' + (ok ? 'Correct.' : 'Pas tout à fait.') + '</b>' + (ok ? '' : '<p>Bonne réponse : <b>' + q[2] + '</b></p>') + '<p>' + q[6] + '</p></div><button class="btn" id="nx" onclick="nxt()">Suivant</button>';
+            document.getElementById("nx").focus()
+        }
+        function res() {
+            var p = Math.round(100 * se.ok / se.n), h = '<h1>' + se.ok + ' / ' + se.n + ' du premier coup</h1><p>' + (p >= 80 ? 'Très solide. Passe aux autres chapitres.' : p >= 50 ? 'Bon début. Relis les explications ci-dessous.' : 'Normal : c’est en se trompant qu’on retient. Relis, puis refais la série.') + '</p>';
+            if (se.miss.length) { h += '<h2>À retenir</h2>'; se.miss.forEach(function (i) { var q = Q[i]; h += '<div class="miss"><b>' + q[1] + '</b><p>✔ ' + q[2] + '</p><p class="mu">' + q[6] + '</p></div>' }) }
+            h += '<div class="row"><button class="btn" onclick="go(\'' + se.m + '\')">Refaire</button>';
+            if (errs().length) h += '<button class="btn alt" onclick="go(\'err\')">Mes erreurs (' + errs().length + ')</button>';
+            A.innerHTML = h + '<button class="btn alt" onclick="home()">Accueil</button></div>'; window.scrollTo(0, 0)
+        }
+        function tick() {
+            var t = new Date(2026, 10, 3, 13, 0, 0) - new Date(), e = document.getElementById('clk');
+            if (t <= 0) { e.textContent = 'Repêchage en cours ou terminé'; return }
+            var d = Math.floor(t / 864e5), h = Math.floor(t % 864e5 / 36e5), m = Math.floor(t % 36e5 / 6e4), s = Math.floor(t % 6e4 / 1e3), p = function (n) { return String(n).padStart(2, '0') };
+            e.innerHTML = '<span class="mu">Repêchage 13 h · </span><b>' + (d ? d + ' j ' : '') + p(h) + ':' + p(m) + ':' + p(s) + '</b>'
+        }
+        tick(); setInterval(tick, 1000);
+        home();
+    </script>
 </body>
+
 </html>
